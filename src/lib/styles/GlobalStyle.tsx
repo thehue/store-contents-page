@@ -129,6 +129,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: rgb(26, 26, 31);
     color: rgb(255, 255, 255);
     font-size: 10px;
+    min-width: 768px;
   }
   .blind{
     position: absolute;
