@@ -14,7 +14,6 @@ const HeaderBlock = styled.header`
   z-index: 999;
   background-color: #000000;
   height: 64px;
-  width: 100%;
   position: sticky;
   top: 0;
   padding-left: 24px;

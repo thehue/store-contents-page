@@ -124,9 +124,18 @@ const GlobalStyle = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
-
   html{
     font-family: 'Roboto', sans-serif;
+    background-color: rgb(26, 26, 31);
+    color: rgb(255, 255, 255);
+    font-size: 10px;
+  }
+  .blind{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip: rect(0px, 0px, 0px, 0px);
+    overflow: hidden;
   }
 `;
 
