@@ -28,8 +28,11 @@ module.exports = {
     ],
   },
   resolve: {
+    alias: {
+      src: path.resolve(__dirname, './src/'),
+    },
     extensions: ['.tsx', '.ts', '.js'],
-    modules: [path.join(__dirname, 'src'), 'node_modules'],
+    modules: ['node_modules'],
   },
   output: {
     filename: '[name].bundle.js',
