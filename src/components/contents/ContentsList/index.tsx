@@ -1,11 +1,6 @@
 import styled from 'styled-components';
 import Item from './Item';
-
-export const PricingOption = {
-  PAID: 0,
-  FREE: 1,
-  VIEW_ONLY: 2,
-} as const;
+import { PricingOption } from 'src/constants';
 
 export type PricingOption = typeof PricingOption[keyof typeof PricingOption];
 
