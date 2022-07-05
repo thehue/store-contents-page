@@ -1,5 +1,5 @@
+import { PricingOption } from 'src/services/types';
 import styled from 'styled-components';
-import { PricingOption } from '..';
 
 type ItemProps = {
   imagePath: string;
@@ -40,7 +40,7 @@ export default function Item({
   );
 }
 
-const ItemWrapper = styled.div`
+export const ItemWrapper = styled.div`
   width: 25%;
   padding-right: 12px;
   padding-left: 12px;
@@ -59,7 +59,7 @@ const ItemWrapper = styled.div`
   }
 `;
 
-const Inner = styled.div`
+export const Inner = styled.div`
   padding-bottom: 40px;
 `;
 

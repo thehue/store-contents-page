@@ -7,8 +7,8 @@ export const contentsListApi = createApi({
     baseUrl: 'https://closet-sample.azurewebsites.net/api/',
   }),
   endpoints: (builder) => ({
-    getContentsList: builder.query<ContentsListItem, string>({
-      query: () => `data`,
+    getContentsList: builder.query<ContentsListItem[], void>({
+      query: () => 'data',
     }),
   }),
 });
