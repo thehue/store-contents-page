@@ -4,7 +4,7 @@ type FilterState = {
   pricingOptions: string[];
 };
 
-const initialState: FilterState = {
+export const initialState: FilterState = {
   pricingOptions: [],
 };
 
@@ -20,7 +20,7 @@ const filterSlice = createSlice({
       const { payload } = action;
       if (pricingOptions.includes(payload)) {
         state.pricingOptions = pricingOptions.filter(
-          (pricingOption) => pricingOption === payload,
+          (pricingOption) => pricingOption !== payload,
         );
       } else {
         state.pricingOptions.push(payload);
