@@ -1,9 +1,9 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
-import contentsFilter from './contentsFilter';
+import filter from './filter';
 
 const rootReducer = combineReducers({
-  contentsFilter,
+  filter,
 });
 
 export default rootReducer;

@@ -1,26 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { contentsFilterActions } from 'src/modules/contentsFilter';
+import { filterActions } from 'src/modules/filter';
 import { RootState } from 'src/modules';
 import { PricingOption } from 'src/constants';
 import ContentsFilterView from './ContentsFilterView';
 
 export default function ContentsFilter() {
   const dispatch = useDispatch();
-  const { setPricingOptions, initialize } = contentsFilterActions;
+  const { togglePricingOptions, initialize } = filterActions;
   const pricingOptions = useSelector(
-    ({ contentsFilter }: RootState) => contentsFilter.pricingOptions,
+    ({ filter }: RootState) => filter.pricingOptions,
   );
 
   const onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    const values = [...pricingOptions];
-    const index = pricingOptions.indexOf(value);
-    if (index < 0) {
-      values.push(value);
-    } else {
-      values.splice(index, 1);
-    }
-    dispatch(setPricingOptions(values));
+
+    dispatch(togglePricingOptions(value));
   };
 
   const onClickResetButton = () => {
