@@ -1,9 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import filter from './filter';
+import { contentsListApi } from 'src/services/contentsList';
 
 const rootReducer = combineReducers({
   filter,
+  [contentsListApi.reducerPath]: contentsListApi.reducer,
 });
 
 export default rootReducer;
