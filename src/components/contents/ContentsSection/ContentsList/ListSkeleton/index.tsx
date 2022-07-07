@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 import shortid from 'shortid';
-import { ItemList } from '..';
 import { Inner, ItemWrapper } from '../Item';
 
 export default function ListSkeleton() {
   return (
-    <ItemList>
+    <>
       {new Array(12).fill(0).map(() => (
         <ItemWrapper key={shortid.generate()}>
           <Inner>
@@ -15,7 +14,7 @@ export default function ListSkeleton() {
           </Inner>
         </ItemWrapper>
       ))}
-    </ItemList>
+    </>
   );
 }
 

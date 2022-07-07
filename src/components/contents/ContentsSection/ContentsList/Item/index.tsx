@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { PricingOption } from 'src/services/types';
 import styled from 'styled-components';
 
@@ -9,13 +10,7 @@ type ItemProps = {
   pricingOption: PricingOption;
 };
 
-export default function Item({
-  imagePath,
-  title,
-  creator,
-  price,
-  pricingOption,
-}: ItemProps) {
+function Item({ imagePath, title, creator, price, pricingOption }: ItemProps) {
   const formatPricingOption = {
     0: `$${price.toLocaleString()}`,
     1: 'FREE',
@@ -39,6 +34,8 @@ export default function Item({
     </ItemWrapper>
   );
 }
+
+export default memo(Item);
 
 export const ItemWrapper = styled.div`
   width: 25%;

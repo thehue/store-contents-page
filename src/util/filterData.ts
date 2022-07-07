@@ -19,5 +19,5 @@ export const filterData = ({
         ? pricingOptions.includes(pricingOption.toString())
         : true,
     )
-    .slice(page * renderingSize, (page + 1) * renderingSize);
+    .slice(0, (page + 1) * renderingSize);
 };

@@ -8,7 +8,7 @@ import { toggleArray } from 'src/util/toggleArray';
 
 export default function ContentsFilter() {
   const dispatch = useDispatch();
-  const { setPricingOptions, initialize } = filterActions;
+  const { setPricingOptions, initialize, setPage } = filterActions;
   const pricingOptions = useSelector(
     ({ filter }: RootState) => filter.pricingOptions,
   );
@@ -21,6 +21,7 @@ export default function ContentsFilter() {
 
     navigateWithPricingOptions(toggledValues);
     dispatch(setPricingOptions(toggledValues));
+    dispatch(setPage(0));
   };
 
   const navigateWithPricingOptions = (pricingOptions: string[]) => {

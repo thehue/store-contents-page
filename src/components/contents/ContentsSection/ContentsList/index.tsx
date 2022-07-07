@@ -2,18 +2,40 @@ import styled from 'styled-components';
 import Item from './Item';
 import ListSkeleton from './ListSkeleton';
 import { useContentsList } from 'src/services/useContentsList';
+import { useRootState } from 'src/modules';
+import { filterActions } from 'src/modules/filter';
+import { useCallback, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 
 export default function ContentsList() {
-  // TODO page redux로 상태 관리
-  const { data, error, isLoading } = useContentsList({ page: 0 });
-
-  if (isLoading) {
-    return <ListSkeleton />;
-  }
+  const dispatch = useDispatch();
+  const { data, error, isLoading, totalCount } = useContentsList();
+  const page = useRootState(state => state.filter.page);
+  const { increasePage } = filterActions;
 
   if (error) {
     return <ErrorText>오류가 발생했습니다 :(</ErrorText>;
   }
+  const fetchMoreTrigger = useRef<HTMLDivElement>(null);
+
+  const onIntersection = useCallback(
+    ([{ isIntersecting }]: IntersectionObserverEntry[]) => {
+      if (isIntersecting) {
+        dispatch(increasePage());
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(onIntersection);
+    if (fetchMoreTrigger.current) observer.observe(fetchMoreTrigger.current);
+
+    // return () => {
+    //   const { current: fetchMoreTriggerElement } = fetchMoreTrigger;
+    //   fetchMoreTriggerElement && observer.unobserve(fetchMoreTriggerElement);
+    // };
+  }, [onIntersection]);
 
   return (
     <ItemList>
@@ -27,6 +49,8 @@ export default function ContentsList() {
           pricingOption={pricingOption}
         />
       ))}
+      {isLoading && <ListSkeleton />}
+      <div ref={fetchMoreTrigger}></div>
     </ItemList>
   );
 }

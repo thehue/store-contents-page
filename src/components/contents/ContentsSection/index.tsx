@@ -8,6 +8,7 @@ import ContentsList from './ContentsList';
 export default function ContentsSection() {
   const location = useLocation();
   const dispatch = useDispatch();
+
   const { setPricingOptions } = filterActions;
 
   useEffect(() => {

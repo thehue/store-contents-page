@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type FilterState = {
   pricingOptions: string[];
+  page: number;
 };
 
 export const initialState: FilterState = {
   pricingOptions: [],
+  page: 0,
 };
 
 const filterSlice = createSlice({
@@ -13,10 +15,19 @@ const filterSlice = createSlice({
   initialState,
   reducers: {
     initialize(state) {
-      state.pricingOptions = initialState.pricingOptions;
+      state = initialState;
     },
     setPricingOptions(state, action: PayloadAction<string[]>) {
       state.pricingOptions = action.payload;
+    },
+    setPage(state, action: PayloadAction<number>) {
+      state.page = action.payload;
+    },
+    increasePage(state) {
+      state.page = state.page + 1;
+    },
+    decreasePage(state) {
+      state.page = state.page - 1;
     },
   },
 });
