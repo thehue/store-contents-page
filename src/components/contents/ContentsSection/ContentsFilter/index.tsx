@@ -1,24 +1,37 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { filterActions } from 'src/modules/filter';
 import { RootState } from 'src/modules';
 import { PricingOption } from 'src/constants';
 import ContentsFilterView from './ContentsFilterView';
+import { toggleArray } from 'src/util/toggleArray';
 
 export default function ContentsFilter() {
   const dispatch = useDispatch();
-  const { togglePricingOptions, initialize } = filterActions;
+  const { setPricingOptions, initialize } = filterActions;
   const pricingOptions = useSelector(
     ({ filter }: RootState) => filter.pricingOptions,
   );
 
+  const navigate = useNavigate();
+
   const onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
+    const toggledValues = toggleArray(pricingOptions, value) as string[];
 
-    dispatch(togglePricingOptions(value));
+    navigateWithPricingOptions(toggledValues);
+    dispatch(setPricingOptions(toggledValues));
+  };
+
+  const navigateWithPricingOptions = (pricingOptions: string[]) => {
+    const queryString = pricingOptions.join(',');
+    const url = `/store${queryString ? `?pricingOptions=${queryString}` : ''}`;
+    navigate(url);
   };
 
   const onClickResetButton = () => {
     dispatch(initialize());
+    navigateWithPricingOptions([]);
   };
 
   const { PAID, FREE, VIEW_ONLY } = PricingOption;

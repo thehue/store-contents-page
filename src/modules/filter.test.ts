@@ -15,23 +15,13 @@ describe('filter reducer', () => {
     expect(state.pricingOptions === []);
   });
 
-  it('handles togglePricingOptions', () => {
-    const noZeroPricingOptionState = { ...initialState, pricingOptions: [] };
-    const onlyZeroPricingOptionState = {
-      ...initialState,
-      pricingOptions: ['0'],
-    };
-
-    const toggledPrigingOptionState1 = filter(
-      noZeroPricingOptionState,
-      filterActions.togglePricingOptions('0'),
-    );
-    const toggledPrigingOptionState2 = filter(
-      onlyZeroPricingOptionState,
-      filterActions.togglePricingOptions('0'),
+  it('handles setPricingOptions', () => {
+    const payload = ['0'];
+    const state = filter(
+      { ...initialState, pricingOptions: [] },
+      filterActions.setPricingOptions(payload),
     );
 
-    expect(toggledPrigingOptionState1.pricingOptions).toStrictEqual(['0']);
-    expect(toggledPrigingOptionState2.pricingOptions).toStrictEqual([]);
+    expect(state.pricingOptions === payload);
   });
 });

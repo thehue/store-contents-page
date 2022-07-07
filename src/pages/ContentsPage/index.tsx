@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import Header from 'src/components/contents/Header';
-import ContentsFilter from 'src/components/contents/ContentsFilter';
-import ContentsList from 'src/components/contents/ContentsList';
 import SearchBar from 'src/components/contents/SearchBar';
+import ContentsSection from 'src/components/contents/ContentsSection';
 
 export default function ContentsPage() {
   return (
@@ -10,8 +9,7 @@ export default function ContentsPage() {
       <Header />
       <Main>
         <SearchBar />
-        <ContentsFilter />
-        <ContentsList />
+        <ContentsSection />
       </Main>
     </>
   );
