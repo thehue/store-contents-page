@@ -7,7 +7,7 @@ export type FilterState = {
 
 export const initialState: FilterState = {
   pricingOptions: [],
-  page: 0,
+  page: 1,
 };
 
 const filterSlice = createSlice({

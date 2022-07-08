@@ -1,57 +1,105 @@
+import { useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import debounce from 'lodash/debounce';
+import { useDispatch } from 'react-redux';
+import { filterActions } from 'src/modules/filter';
+import { useRootState } from 'src/modules';
+import { useGetContentsListQuery } from 'src/services/contentsList';
+import { filterData } from 'src/util/filterData';
 import Item from './Item';
 import ListSkeleton from './ListSkeleton';
-import { useContentsList } from 'src/services/useContentsList';
-import { useRootState } from 'src/modules';
-import { filterActions } from 'src/modules/filter';
-import { useCallback, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+
+const INTERSECTION_THRESHOLD = 5;
+const LOAD_DELAY_MS = 500;
+const NUM_PER_PAGE = 12;
 
 export default function ContentsList() {
   const dispatch = useDispatch();
-  const { data, error, isLoading, totalCount } = useContentsList();
-  const page = useRootState(state => state.filter.page);
+  const page = useRootState(({ filter }) => filter.page);
+  const pricingOptions = useRootState(({ filter }) => filter.pricingOptions);
+  const { data, error, isLoading, totalCount } = useGetContentsListQuery(
+    undefined,
+    {
+      refetchOnMountOrArgChange: true,
+      selectFromResult: ({ data, error, isLoading }) => ({
+        totalCount: data?.length,
+        data: data
+          ? filterData({
+              pricingOptions,
+              data,
+              page,
+              renderingSize: NUM_PER_PAGE,
+            })
+          : data,
+        error,
+        isLoading,
+      }),
+    },
+  );
+
   const { increasePage } = filterActions;
 
   if (error) {
     return <ErrorText>오류가 발생했습니다 :(</ErrorText>;
   }
-  const fetchMoreTrigger = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
 
-  const onIntersection = useCallback(
-    ([{ isIntersecting }]: IntersectionObserverEntry[]) => {
-      if (isIntersecting) {
+  const _handleEntry = (entry: IntersectionObserverEntry) => {
+    const boundingRect = entry.boundingClientRect;
+    const intersectionRect = entry.intersectionRect;
+
+    if (
+      !isLoading &&
+      totalCount &&
+      entry.isIntersecting &&
+      intersectionRect.bottom - boundingRect.bottom <= INTERSECTION_THRESHOLD
+    ) {
+      if (page < Math.ceil(totalCount / NUM_PER_PAGE)) {
         dispatch(increasePage());
       }
+    }
+  };
+  const handleEntry = debounce(_handleEntry, LOAD_DELAY_MS);
+
+  const onIntersect = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      handleEntry(entries[0]);
     },
-    [],
+    [handleEntry],
   );
 
   useEffect(() => {
-    const observer = new IntersectionObserver(onIntersection);
-    if (fetchMoreTrigger.current) observer.observe(fetchMoreTrigger.current);
+    if (triggerRef.current) {
+      const container = triggerRef.current;
+      const observer = new IntersectionObserver(onIntersect);
 
-    // return () => {
-    //   const { current: fetchMoreTriggerElement } = fetchMoreTrigger;
-    //   fetchMoreTriggerElement && observer.unobserve(fetchMoreTriggerElement);
-    // };
-  }, [onIntersection]);
+      observer.observe(container);
+
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, [triggerRef, onIntersect]);
 
   return (
-    <ItemList>
-      {data?.map(({ id, imagePath, title, creator, price, pricingOption }) => (
-        <Item
-          key={id}
-          imagePath={imagePath}
-          title={title}
-          creator={creator}
-          price={price}
-          pricingOption={pricingOption}
-        />
-      ))}
-      {isLoading && <ListSkeleton />}
-      <div ref={fetchMoreTrigger}></div>
-    </ItemList>
+    <>
+      <ItemList>
+        {data?.map(
+          ({ id, imagePath, title, creator, price, pricingOption }) => (
+            <Item
+              key={id}
+              imagePath={imagePath}
+              title={title}
+              creator={creator}
+              price={price}
+              pricingOption={pricingOption}
+            />
+          ),
+        )}
+        {isLoading && <ListSkeleton />}
+      </ItemList>
+      <div ref={triggerRef}></div>
+    </>
   );
 }
 
