@@ -1,6 +1,8 @@
+import { lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import GlobalStyle from './lib/styles/GlobalStyle';
-import ContentsPage from './pages/ContentsPage';
+
+const ContentsPage = lazy(() => import('./pages/ContentsPage'));
 
 export default function App() {
   return (
