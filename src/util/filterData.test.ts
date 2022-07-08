@@ -1,6 +1,6 @@
 import { ContentsListItem } from 'src/services/types';
 import { it, expect, describe } from 'vitest';
-import { filterData } from './filterData';
+import { filterData, FilterDataParams } from './filterData';
 
 describe('filterData()', () => {
   const sampleData = [
@@ -33,26 +33,43 @@ describe('filterData()', () => {
     },
   ] as ContentsListItem[];
 
+  const defaultInputParam: FilterDataParams = {
+    pricingOptions: [],
+    data: sampleData,
+    page: 1,
+    renderingSize: 3,
+    keyword: '',
+  };
+
   it('should be filtered by pricing options, if pricing options are provided', () => {
-    const inputParam = {
-      pricingOptions: ['0'],
-      data: sampleData,
-      page: 0,
-      renderingSize: 3,
-    };
+    const inputParam = { ...defaultInputParam, pricingOptions: ['0'] };
 
     const result = filterData(inputParam);
 
     expect(result).toStrictEqual([sampleData[0]]);
   });
 
+  it('should be filtered by keyword, if keyword is provided', () => {
+    const titleInputParam = { ...defaultInputParam, keyword: 'bag' };
+    const creatorInputParam = { ...defaultInputParam, keyword: 'adam' };
+
+    const titleSearchResult = filterData(titleInputParam);
+    const creatorSearchResult = filterData(creatorInputParam);
+
+    expect(titleSearchResult).toStrictEqual([sampleData[2]]);
+    expect(creatorSearchResult).toStrictEqual([sampleData[0]]);
+  });
+
+  it('should be original data, if keyword is not provided', () => {
+    const inputParam = { ...defaultInputParam, keyword: '' };
+
+    const result = filterData(inputParam);
+
+    expect(result).toStrictEqual(sampleData);
+  });
+
   it('should be original data, if pricing options are not provided', () => {
-    const inputParam = {
-      pricingOptions: [],
-      data: sampleData,
-      page: 0,
-      renderingSize: 3,
-    };
+    const inputParam = defaultInputParam;
 
     const result = filterData(inputParam);
 
@@ -61,9 +78,7 @@ describe('filterData()', () => {
 
   it('should be the same size, if renderingSize is given', () => {
     const inputParam = {
-      pricingOptions: [],
-      data: sampleData,
-      page: 0,
+      ...defaultInputParam,
       renderingSize: 1,
     };
 
