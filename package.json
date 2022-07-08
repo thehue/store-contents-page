@@ -9,7 +9,7 @@
     "build": "webpack --config webpack.prod.js",
     "homepage": "https://thehue.github.io/store-contents-page/",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "cp build/index.html build/404.html && gh-pages -d build"
   },
   "keywords": [],
   "author": "thehue <gouk32@naver.com>",
