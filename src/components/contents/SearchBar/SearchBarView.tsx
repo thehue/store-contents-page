@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 import styled from 'styled-components';
 
 type SearchBarProps = {
@@ -10,14 +10,14 @@ type SearchBarProps = {
   onFormSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 };
 
-export default function SearchBarView({
+const SearchBarView = ({
   localKeyword,
   onChange,
   onEnterKey,
   onClickSearchButton,
   onFormReset,
   onFormSubmit,
-}: SearchBarProps) {
+}: SearchBarProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -51,7 +51,9 @@ export default function SearchBarView({
       </ButtonsWrapper>
     </SearchBarForm>
   );
-}
+};
+
+export default memo(SearchBarView);
 
 const SearchBarForm = styled.form`
   display: flex;

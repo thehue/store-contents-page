@@ -13,28 +13,37 @@ export default function SearchBar() {
     setLocalKeyword(() => event.target.value);
   }, []);
 
-  const searchKeyword = () => {
+  const searchKeyword = useCallback(() => {
     dispatch(setKeyword(localKeyword));
-  };
+  }, [localKeyword]);
 
-  const onEnterKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      searchKeyword();
-    }
-  };
+  const onEnterKey = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        searchKeyword();
+      }
+    },
+    [searchKeyword],
+  );
 
-  const onClickSearchButton = () => {
+  const onClickSearchButton = useCallback(() => {
     searchKeyword();
-  };
+  }, [searchKeyword]);
 
-  const onFormReset = (inputRef: React.RefObject<HTMLInputElement>) => {
-    inputRef.current?.focus();
-    setLocalKeyword(() => '');
-  };
+  const onFormReset = useCallback(
+    (inputRef: React.RefObject<HTMLInputElement>) => {
+      inputRef.current?.focus();
+      setLocalKeyword(() => '');
+    },
+    [],
+  );
 
-  const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
+  const onFormSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+    },
+    [],
+  );
 
   const props = {
     localKeyword,
