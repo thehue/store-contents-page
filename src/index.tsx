@@ -9,14 +9,14 @@ import { BrowserRouter } from 'react-router-dom';
 const container = document.getElementById('root');
 const store = configureStore({
   reducer: rootReducer,
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(contentsListApi.middleware),
 });
 
 if (container) {
   const root = createRoot(container);
   root.render(
-    <BrowserRouter>
+    <BrowserRouter basename="/store-contents-page">
       <Provider store={store}>
         <App />
       </Provider>
