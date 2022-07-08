@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export type FilterState = {
   pricingOptions: string[];
   page: number;
+  keyword: string;
 };
 
 export const initialState: FilterState = {
   pricingOptions: [],
   page: 1,
+  keyword: '',
 };
 
 const filterSlice = createSlice({
@@ -28,6 +30,9 @@ const filterSlice = createSlice({
     },
     decreasePage(state) {
       state.page = state.page - 1;
+    },
+    setKeyword(state, action: PayloadAction<string>) {
+      state.keyword = action.payload;
     },
   },
 });

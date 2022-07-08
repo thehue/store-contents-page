@@ -1,10 +1,11 @@
 import { ContentsListItem } from 'src/services/types';
 
-type FilterDataParams = {
+export type FilterDataParams = {
   pricingOptions: string[];
   data: ContentsListItem[];
   page: number;
   renderingSize: number;
+  keyword: string;
 };
 
 export const filterData = ({
@@ -12,6 +13,7 @@ export const filterData = ({
   data,
   page,
   renderingSize,
+  keyword,
 }: FilterDataParams) => {
   return data
     .filter(({ pricingOption }) =>
@@ -19,5 +21,11 @@ export const filterData = ({
         ? pricingOptions.includes(pricingOption.toString())
         : true,
     )
-    .slice(0, (page + 1) * renderingSize);
+    .filter(({ creator, title }) =>
+      keyword
+        ? creator.toLocaleLowerCase().includes(keyword) ||
+          title.toLocaleLowerCase().includes(keyword)
+        : true,
+    )
+    .slice(0, page * renderingSize);
 };

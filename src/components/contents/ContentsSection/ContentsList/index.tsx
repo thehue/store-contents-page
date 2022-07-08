@@ -15,7 +15,7 @@ const NUM_PER_PAGE = 12;
 
 export default function ContentsList() {
   const dispatch = useDispatch();
-  const page = useRootState(({ filter }) => filter.page);
+  const { page, keyword } = useRootState(({ filter }) => filter);
   const pricingOptions = useRootState(({ filter }) => filter.pricingOptions);
   const { data, error, isLoading, totalCount } = useGetContentsListQuery(
     undefined,
@@ -29,6 +29,7 @@ export default function ContentsList() {
               data,
               page,
               renderingSize: NUM_PER_PAGE,
+              keyword,
             })
           : data,
         error,
