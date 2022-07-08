@@ -1,3 +1,4 @@
+const Dotenv = require('dotenv-webpack');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common');
 
@@ -12,4 +13,5 @@ module.exports = merge(common, {
   optimization: {
     runtimeChunk: 'single',
   },
+  plugins: [new Dotenv()],
 });
