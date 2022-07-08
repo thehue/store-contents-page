@@ -16,7 +16,7 @@ const store = configureStore({
 if (container) {
   const root = createRoot(container);
   root.render(
-    <BrowserRouter basename="/store">
+    <BrowserRouter basename="/">
       <Provider store={store}>
         <App />
       </Provider>

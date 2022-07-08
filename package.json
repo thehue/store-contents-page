@@ -7,9 +7,9 @@
     "test": "vitest --reporter verbose",
     "start": "webpack serve --config webpack.dev.js --open",
     "build": "webpack --config webpack.prod.js",
-    "homepage": "http://thehue.github.io/store",
+    "homepage": "https://thehue.github.io/store-contents-page/",
     "predeploy": "npm run build",
-    "deploy": "cp build/index.html build/404.html && gh-pages -d build"
+    "deploy": "gh-pages -d build"
   },
   "keywords": [],
   "author": "thehue <gouk32@naver.com>",
