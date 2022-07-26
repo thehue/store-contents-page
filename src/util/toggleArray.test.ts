@@ -8,7 +8,7 @@ describe('toggleArray', () => {
 
     const result = toggleArray(inputArray, inputValue);
 
-    expect(result === []);
+    expect(result).toStrictEqual([]);
   });
 
   it("should add the input value, if input array doesn't have the input value", () => {
@@ -17,6 +17,6 @@ describe('toggleArray', () => {
 
     const result = toggleArray(inputArray, inputValue);
 
-    expect(result === ['0']);
+    expect(result).toStrictEqual(['0']);
   });
 });
